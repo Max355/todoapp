@@ -27,7 +27,7 @@ namespace ToDoApp.Controllers
         [HttpPost]
         public IActionResult Create(ToDoItem data)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _dbContext.ToDoItems.Add(new ToDoItem { Id = new Random().Next(), Text = data.Text });
                 _dbContext.SaveChanges();
@@ -51,6 +51,32 @@ namespace ToDoApp.Controllers
         }
 
         [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var item = _dbContext.ToDoItems.Find(id);
+            return View(item);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(ToDoItem model)
+        { 
+          if (ModelState.IsValid)
+          {
+            var item = _dbContext.ToDoItems.Find(model.Id);
+
+          if (model.IsComplete && !item.IsComplete)
+          {
+             item.IsComplete = true;
+             item.CompleteDate = DateTime.UtcNow;
+          }
+          item.Text = model.Text;
+          _dbContext.SaveChanges();
+          return RedirectToAction("Index");
+          }
+        return View(model);
+       }
+
+    [HttpGet]
         public IActionResult Init()
         {
             if (_dbContext.ToDoItems.Any())
