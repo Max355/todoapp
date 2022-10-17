@@ -1,0 +1,51 @@
+﻿@model IEnumerable<ToDoApp.Models.ToDoItem>
+
+@{
+    ViewData["Title"] = "Список задач";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="float-end" style="margin: 7px 0 0 ">
+    <a class="btn btn-success" asp-action="Create">Створити нову задачу</a>
+</div>
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Text)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsComplete)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CompleteDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Text)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsComplete)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompleteDate)
+            </td>
+            <td>
+                <a class="btn btn-outline-warning" asp-action="Edit" asp-route-id="@item.Id">Редагувати</a> 
+                <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@item.Id">Деталі</a> 
+                <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id">Видалити</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
